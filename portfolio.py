@@ -1,17 +1,19 @@
-# PORTFOLIO CLASS
+#PORTFOLIO CLASS
 from typing import List
 import pandas as pd 
 import numpy as np 
 import datetime as dt
+from strategy import Strategy
+
 class Portfolio:
     def __init__(self, initial_balance=100000.00):
         self.positions = {}
         self.cash_balance = initial_balance
         self.transaction_history = []
-    def execute_trades(self, historical_data):
+    def execute_trades(self, close_prices):
 
         # <TODO> implement me
-        signals = self.generate_ema_signals(historical_data['Close'], window=50)
+        signals = Strategy.generate_ema_signals(close_prices, window=50)
 
         for i in range(1, len(signals)):
             if signals[i] == 1 and signals[i - 1] == 0:
