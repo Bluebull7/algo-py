@@ -31,7 +31,7 @@ class Portfolio:
             print(f"Not enough cash to buy on {date}...")
             return
 
-        # update the position and the cash cash balance
+        # update the position and the cash cash_balance
         elif date not in self.positions:
             self.positions[date] = 100000.00
 
