@@ -3,6 +3,8 @@ from typing import List
 import pandas as pd 
 import numpy as np 
 import datetime as dt
+
+from pandas.core.indexes.datetimes import DatetimeTimedeltaMixin
 from strategy import Strategy
 
 class Portfolio:
@@ -35,7 +37,31 @@ class Portfolio:
 
 
     def buy(self, date, price):
-        pass
+      # Assume fixed investment amount for each trade 
+        investment_amount = 1000.00 
+
+      # calculate shares
+        shares_to_buy = investment_amount / price
+
+      # check if there is enough cash to execute trade 
+        if shares_to_buy * price > self.cash_balance:
+            print(f"Not enough cash to buy on {date}...")
+            return
+
+      # update the position and the cash cash_balance
+        elif date not in self.positions:
+          self.positions[date] = 100000.00
+        
+          self.positions += shares_to_buy
+          self.cash_balance -= shares_to_buy * price
+
+      # Record the transaction in transaction_history
+          self.transaction_history.append({
+            'Date': date,
+            'Action': 'Buy',
+            'Price': price,
+            'Shares': share_to_buy
+          }) 
 
     def sell(self, date, price):
         pass
