@@ -1,6 +1,6 @@
 # PORTFOLIO CLASS
 import numpy as np
-
+from typing import List
 from strategy import Strategy
 
 
@@ -9,6 +9,7 @@ class Portfolio:
         self.positions = {}
         self.cash_balance = initial_balance
         self.transaction_history = []
+        self.strategy = Strategy()
 
     def generate_ema_signal(self, close_price, window):
         ema = close_price.ewm(span=window, adjust=False).mean()
@@ -67,11 +68,33 @@ class Portfolio:
                 }
             )
 
-    def calculate_performance(self):
-
-        # <TODO> implement me
-
+    def calculate_performance(self, final_date):
+             
         # Calculate portfolio performance metrics
-        # print/return perf results
+        if not self.transaction_history:
+            print("No transaction executed. Performance cannot be calculated")
+            return
+        else:
 
-        pass
+        # sort the transaction_history by date
+            sorted_transactions = sorted(self.transaction_history, key=lambda x:
+                                         x['Date'])
+        # calcute cumulative returns
+            cumulative_returns = 0.0
+            portfolio_value_over_time = []
+
+            for transaction in sorted_transactions:
+                if transaction['Action'] == 'Buy':
+                    cumulative_returns -= transaction['Shares'] * transaction['Price']
+                elif transaction['Action'] == 'Sell':
+                    cumulative_returns += transaction['Shares'] * transaction['Price']
+            portfolio_value = self.cash_balance + cumulative_returns
+            portfolio_value_over_time.append((transaction['Date'], portfolio_value))
+
+        # calculate total returns
+            total_returns = (portfolio_value_over_time[-1][1] - initial_balance) / initial_balance * 1000.00
+
+            #print/return performance metrics
+            print(f"Total Returns: {total_returns:.2f}%")
+            print(f"Final Portfolio Value on {final_date}: {portfolio_value_over_time[-1][1]:.2f}")
+
