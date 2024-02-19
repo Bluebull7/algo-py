@@ -61,7 +61,27 @@ class Portfolio:
             )
 
     def sell(self, date, price):
-        pass
+    # check if there is any shares to self
+        if date not in self.positions or self.positions[date] == 0:
+            print(f"No shares to sell on {date}")
+            return
+
+        else:
+            shares_to_sell = self.positions[date]
+
+            # update the positions and cash cash_balance
+            self.positions[date] = 0 
+            self.cash_balance += shares_to_sell * price
+
+            # record the transaction in transaction_history
+
+            self.transaction_history.append({
+                'Date': date,
+                'Action': 'Sell',
+                'Price': price,
+                'Shares': shares_to_sell
+            })
+    
 
     def calculate_performance(self):
 
