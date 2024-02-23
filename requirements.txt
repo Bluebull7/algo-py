@@ -1,5 +1,4 @@
 attrs==23.1.0
-btrfsutil==6.7
 cffi==1.16.0
 cryptography==41.0.7
 packaging==23.2
